@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    {% for item in messages_sent %}
+
+    <h1>{{ item }}<small> to: {{ item.receiver }} on {{ item.sent }}</small></h1> <br/>
+        <div class="well">
+            {{ item.body }}
+        </div>
+    {% endfor %}
+
+{% endblock %}

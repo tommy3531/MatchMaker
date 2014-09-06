@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <a href="{% url 'reply' message.id %}">Reply</a>
+    <br/>
+
+{{ message }}
+
+{% endblock %}

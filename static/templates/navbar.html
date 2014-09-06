@@ -1,0 +1,42 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <form class="navbar-form navbar-left" role="search"><!-- START OF SEARCH FORM -->
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+            </form><!-- END OF SEARCH FORM -->
+            {%  if request.user.is_authenticated %}<!-- START LOGIN LOGIC -->
+                <ul class='nav navbar-nav pull-right'>
+                    <li><a href='/accounts/logout/'>Logout</a></li>
+                </ul>
+                <p class="navbar-text pull-right">Signed in as {{ request.user }}</p><!-- IF USER IS AUTHENTICATED SHOW USERNAME -->
+            {% else %}<!-- IF NOT AUTHENTICATED SHOW EMAIL AND PASSWORD TEXTBOX -->
+            <ul class='nav navbar-nav pull-right'>
+                <li><a href='/accounts/login/'>Login</a></li>
+            </ul>
+            <form class="navbar-form navbar-right" role="form"><!-- START OF LOGIN FORM -->
+                <div class="form-group">
+                    <input type="text" placeholder="Email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" class="form-control">
+                </div>
+                    <button type="submit" class="btn btn-success">Sign in</button>
+            </form><!-- END OF LOGIN FORM -->
+            {% endif %}<!-- ENDIF LOGIN LOGIC -->
+        </div><!--.navbar-collapse -->
+    </div><!-- END .CONTAINER -->
+</div>
+
+

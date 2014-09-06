@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/static/fonts/favicon.ico">
+
+    <title>Jumbotron Template for Bootstrap {% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/jumbotron.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="/static/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+   {% include 'navbar.html' %}
+
+   <div class="container">
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+   {% block jumbotron %} {% endblock %}
+
+        <div class='body-content'>
+            <div class='row'>
+            {% if request.user.is_authenticated %}
+                <div class='col-lg-2 col-12'>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/">{% if request.session.new_matches_count %}<span class="badge pull-right">{{ request.session.new_matches_count }}</span>{% endif %}Home</a></li>
+                        <li><a href='{% if request.user.is_authenticated %}{% url "profile" request.user.username %} {% endif %}'>Profiles</a></li>
+                        <li><a href='{% url 'questions' %}'>Improved Matches</a></li>
+
+                        <li><a href='{% url "inbox" %}'>{% if not 'messages' in request.get_full_path %}
+                        {% if request.session.num_of_messages == 0 %}
+                        <span class="badge pull-right">{{ request.session.num_of_messages }}</span>
+                             {% endif %}{% endif %}Messages</a></li>
+
+                             {% if 'messages' in request.get_full_path %}
+                                 <li><a href='{% url "compose" %}'>Compose</a></li>
+                             <li><a href='{% url "inbox" %}'>Inbox</a></li>
+
+                             {% if 'messages' in request.session.num_of_messages == 0 %}
+                                 <span class="badge pull-right">{{ request.session.num_of_messages }}</span>
+
+
+                        {% endif %}
+                        </a></li>
+                        <li><a href='{% url "sent" %}'>Sent</a></li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            {% endif %}
+                <div class='col-lg-10 col-12'>
+                    <div class='row'>
+                        <!-- DISPLAY MESSAGES WHEN UPDATE HAPPENS -->
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    <!-- END DISPLAY MESSAGES -->
+                    </div>
+                    {% block content %} {% endblock %}
+                </div>
+            </div>
+        </div>
+      <hr>
+
+
+        {% include 'footer.html' %}
+
+        </div>
+
+   </div><!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!--<script src="/static/js/bootstrap.min.js"></script>-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="static/js/ie10-viewport-bug-workaround.js"></script>
+    <script>
+        $(document).ready(function(){
+            {% block jquery %}
+            {% endblock %}
+        });
+    </script>
+  </body>
+</html>

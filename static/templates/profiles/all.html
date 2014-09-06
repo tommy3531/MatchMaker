@@ -1,0 +1,38 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<div class='col-lg-6 pull-left'>
+    <h1>Matched Users</h1>
+    <div class='row'>
+        {% for user in matches %}
+            <div class='col-lg-4'>
+                <a href='/members/{{ user.match.username }}'>
+                    {% for pic in user.match.userpicture_set.all %}
+                        {% if forloop.first %}
+                            <img src='{{ MEDIA_URL }}{{ pic }}' class='img-responsive' />
+                        {% endif %}
+                    {% endfor %}
+                    {% if not user.match.userpicture_set.all %}
+                            <img src='{{ STATIC_URL }}img/default.jpg' class='img-responsive' />
+                        {% endif %}
+                        {{ user.match }}</a><br/>
+                    {% for item in user.match.address_set.all %}
+                        {% if forloop.first %}
+                            {{ item }}
+                        {% endif %}
+                    {% endfor %}
+            <br/><br/>
+            </div>
+            {% cycle '' '' '' '</div><div class="row">' %}
+        {% endfor %}
+    </div>
+</div>
+<div class='col-lg-6 pull-right'>
+    <h1>Suggested Jobs</h1>
+    {% for abc in request.user.jobmatch_set.all %}
+        {% if abc.show %}
+            <li>{{ abc.job.position }} at {{ abc.job.employer }} in {{ abc.job.city }}</li>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

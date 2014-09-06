@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class='row'>
+
+    <div class='col-lg-6'>
+
+        <!-- If they have first name show if
+        ---- else show there username -->
+
+        {% if single_user.first_name %}
+            <h1>{{ single_user.first_name }}</h1>
+        {% else %}
+            <h1>{{ single_user }}</h1>
+        {% endif %}
+
+        {% for pic in single_user.userpicture_set.all %}
+            {% if forloop.first %}
+                <img src='{{ MEDIA_URL }}{{ pic }}' class='img-responsive' />
+            {% endif %}
+        {% endfor %}
+        {% if not single_user.userpicture_set.all %}
+            <img src='{{ STATIC_URL }}/img/default.jpg' class='img-responsive' />
+        {% endif %}
+    </div>
+    <div class='col-lg-6' > <!-- START OF EMPLOYEE SECTION -->
+    {% if not request.user == single_user %}<h1>Match {{ match }} %</h1>{% endif %}
+        <h3>Information</h3>
+        <div class='panel panel-default'> <!-- START OF PANEL FOR RECENT JOBS -->
+            <div class='panel-heading'>Recent Jobs</div> <!-- RECENT JOB PANEL HEADING -->
+            <div class="panel-body">
+                {% for item in single_user.job_set.all %}
+                    {{ item }}
+                {% endfor %}
+            </div>
+        </div> <!-- END OF RECENT JOBS -->
+        <div class='panel panel-default'> <!-- START OF PANEL FOR ADDRESSES -->
+            <div class='panel-heading'>Addresses</div> <!-- ADDRESSES PANEL HEADING -->
+                <div class='panel-body'>
+                    {% for item in single_user.address_set.all %}
+                        {% if request.user.userrole.role == 'Premium' or request.user.userrole.role == 'Staff' %}
+                            <li>{{ item.street_address }}, {{ item.city }}, {{ item.state }}</li>
+                        {% else %}
+                        {{ item }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div> <!-- END OF EMPLOYEE SECTION -->
+{% endblock %}

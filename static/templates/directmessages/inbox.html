@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <table class='table table-striped'>
+        <thead>
+            <th>From</th><th>Subject</th>
+        </thead>
+        <tbody>
+        {% for item in messages_in_inbox %}
+        <tr>
+            <td>
+                {{ item.sender }}
+            </td>
+            <td>
+                {% if item.read %}
+                    <span style="color: grey;" class="glyphicon glyphicon-ok"></span>
+                {% endif %}
+                <a {% if item.read %} style='color: grey;' {% endif %} href='{{ item.get_absolute_url }}'>{{ item.subject|truncatewords:'10' }}<a/>
+                {% if item.sent %} <small>{{ item.sent }}</small> {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
